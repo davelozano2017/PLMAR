@@ -1,12 +1,15 @@
 <?php 
 include '../../functions/functions.php';
-if(!isset($_SESSION['admin'])){
+if(!isset($_SESSION['user'])){
 header("Location: ../index.php");
 }
-$query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['admin']);
+$query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['user']);
 $row = $query->fetch_object();
 $name = $row->name;
 $image = $row->image;
+$email = $row->email;
+$username = $row->username;
+$gender = $row->gender;
 ?>
 
 <!DOCTYPE html>
@@ -96,51 +99,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
 
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search Book...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
         <!-- Optionally, you can add icons to the links -->
-        <li ><a href="dashboard.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li><a href="home.php"><i class="fa fa-home"></i> <span>Home</span></a></li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-book"></i> <span> Manage Books</span>
+            <i class="fa fa-book"></i> <span> Books</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
-            <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
           </ul>
         </li>
-        <li class="treeview active">
-          <a href="#">
-            <i class="fa fa-user"></i> <span> Manage Accounts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
-          </ul>
-        </li>
-
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-gear"></i> <span> Maintenance</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
-            <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
-          </ul>
-        </li>
-
       </ul>
-      <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -149,70 +135,110 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1><i class="fa fa-user-plus"></i> Add Student</h1>
+      <h1><i class="fa fa-pencil"></i> Edit Profile</h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="#">Manage Account</a></li>
-        <li class="active"><a href="#">Add Student</a></li>
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+        <li class="active"><a href="#">Edit Profile</a></li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-    
-    <div class="row">
-      <div class="col-md-12 col-xs-12">
-        <a class="btn btn-primary flat" href="view-students.php"><i class="fa fa-reply"></i> Back</a>
-      </div>
-    </div>
-    <br>
     <div class="row">
       
-        <div class="col-md-12 col-xs-12">
+        <div class="col-md-3 col-xs-12">
         <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><i class="fa fa-exclamation-circle"></i> Student Information</h3>
+              <h3 class="box-title"><i class="fa fa-image"></i> Profile Picture</h3>
             </div>
             <!-- /.box-header -->
-            <?php add_student()?>
+            <?php edit_profile()?>
             <!-- form start -->
-            <form role="form" method="POST" data-parsley-validate>
+            <form role="form" method="POST" enctype="multipart/form-data" data-parsley-validate>
               <div class="box-body">
 
+
                 <div class="form-group">
-                  <label for="StudentID">Student ID</label>
-                  <input type="text" class="form-control"  name="student_id" required>
+                  <input type="hidden" name="id" value="<?php echo$_SESSION['user']?>">
+                  <img class="img-responsive" style="width:100%" src="../../<?php echo$image?>">
                 </div>
 
                 <div class="form-group">
-                  <label for="Name">Name</label>
-                  <input type="text" class="form-control"  name="name" required>
+                  <input type="file" class="form-control"  name="image" required>
                 </div>
 
-
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Email Address</label>
-                  <input type="email" class="form-control" name="email" required>
-                </div>
-
-                <div class="form-group">
-                  <label for="Gender">Gender</label>
-                  <select name="gender" class="form-control" style="width: 100%" required>
-                  <option value="Male" selected="selected">Male</option>
-                  <option value="Female">Female</option>
-                  </select>
-                </div>
                
               </div>
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" name="btn-add-students" class="btn btn-primary flat"><i class="fa fa-user-plus"> Add Student</i></button>
+                <button type="submit" name="btn" class="btn btn-primary flat"><i class="fa fa-check-circle"> Update Profile</i></button>
               </div>
             </form>
           </div>
           <!-- /.box -->
+
+          
+          </div>
+
+           <div class="col-md-9 col-xs-12">
+        <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"><i class="fa fa-exclamation-circle"></i> General Information</h3>
+            </div>
+            <!-- /.box-header -->
+            <?php password_change()?>
+            <!-- form start -->
+            <form role="form" method="POST" data-parsley-validate>
+              <div class="box-body">
+
+                <div class="form-group">
+                  <label for="StudentID">Username</label>
+                  <input type="hidden" name="id" value="<?php echo$_SESSION['user']?>">
+                  <p class="form-control"><?php echo$username?></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="Name">Name</label>
+                  <p class="form-control"><?php echo$name?></p>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email Address</label>
+                  <p class="form-control"><?php echo$email?></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="Gender">Gender</label>
+                  <p class="form-control"><?php echo$gender?></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Password</label>
+                  <input type="password" id="password" class="form-control" minlength=6 name="password" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Confirm Password</label>
+                  <input type="password" class="form-control" data-parsley-equalto="#password" name="cpassword" required>
+                </div>
+
+               
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" name="btn-edit-password" class="btn btn-primary flat"><i class="fa fa-check-circle"> Save Changes</i></button>
+                <a href="view-requests.php" class="btn btn-warning flat"><i class="fa fa-eye"></i> View Request</a>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+
+          
           </div>
 
     </div>

@@ -7,6 +7,12 @@ $query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['admin'
 $row = $query->fetch_object();
 $name = $row->name;
 $image = $row->image;
+$q = $db->query("SELECT * FROM pl_account_tbl WHERE role = 1");
+$count_new_student = $q->num_rows;
+$qq = $db->query("SELECT * FROM pl_books_tbl");
+$count_new_books = $qq->num_rows;
+$qqq = $db->query("SELECT * FROM pl_books_tbl WHERE status = 'Unavailable'");
+$count_unavailable_books = $qqq->num_rows;
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +31,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
   <link rel="stylesheet" href="../../dist/css/skins/skin-yellow.min.css">
+  <link rel="stylesheet" type="text/css" href="../../dist/sweetalert/dist/sweetalert.css">
+  <link rel="stylesheet" type="text/css" href="../../dist/sweetalert/themes/twitter/twitter.css">
+  <script type="text/javascript" src="../../dist/sweetalert/dist/sweetalert.min.js"></script>
+
 
 </head>
 
@@ -38,7 +50,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Logo -->
     <a class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><img src="../images/logo.png" class="img-responsive"></span>
+      <span class="logo-mini"><img src="../../images/logo.png" class="img-responsive"></span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>PLMAR</b></span>
     </a>
@@ -89,23 +101,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search Book...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li class="active"><a href="dashboard.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-book"></i> <span> Manage Books</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
+            <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
+            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+          </ul>
+        </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-user"></i> <span> Manage Accounts</span>
@@ -114,7 +127,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="add-students.php"><i class="fa fa-circle-o"></i> Student Account</a></li>
+            <li><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-gear"></i> <span> Maintenance</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
+            <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
           </ul>
         </li>
 
@@ -130,13 +156,70 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <section class="content-header">
       <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
       <ol class="breadcrumb">
-        <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Dashboar<d/a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
+    
+    <div class="row">
+      
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-blue">
+            <div class="inner">
+              <h3><?php echo$count_new_student?></h3>
 
+              <p>New Students</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-user"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3><?php echo$count_new_books?></h3>
+
+              <p>New Books</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-book"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3><?php echo$count_unavailable_books?></h3>
+
+              <p>Unavailable Books</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-book"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+        <!-- ./col -->
+
+    </div>
 
       <div class="clearfix"></div>
     </section>
@@ -154,5 +237,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../../bootstrap/js/bootstrap.min.js"></script>
 <script src="../../dist/js/app.min.js"></script>
+<script src="../../plugins/select2/select2.full.min.js"></script>
+<script src="../../dist/js/parsleyjs/dist/parsley.min.js"></script>
+<script type="text/javascript">
+   $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
 </body>
 </html>

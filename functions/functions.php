@@ -176,8 +176,342 @@ function modify_student() {
 	}
 }
 
+function modify_category() {
+	global $db;
+	if(isset($_POST['btn-edit-category'])) {
+		$id 		= $db->real_escape_string($_POST['id']);
+		$category 	= $db->real_escape_string($_POST['category']);
+		$sql = "UPDATE pl_books_category_tbl SET category = '$category' WHERE id = '$id'";
+			$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>Category has been updated.</h4>",
+					timer: 500, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				},
+				function(){
+				  setTimeout(function(){
+				    location.href="modify-category.php?id=<?php echo$id?>";
+				  }, 500);
+				});
+				</script>
+			<?php
+		}		
+	}
+
+	if(isset($_POST['btn-delete-category'])) {
+		$id 	= $db->real_escape_string($_POST['id']);
+		$sql = "DELETE FROM pl_books_category_tbl WHERE id = '$id'";
+		$query = $db->query($sql);
+		if($query) {
+		?>	
+			<script type="text/javascript">
+			swal({   
+				title: "",  
+				text: "<h4>Category has been removed.</h4>",
+				timer: 500, 
+				html:  true,
+				type: 'success',  
+				showConfirmButton: true 
+			},
+			function(){
+			  setTimeout(function(){
+			    location.href="view-category.php";
+			  }, 500);
+			});
+			</script>
+		<?php
+		}
+	}
+}
+
+function modify_books() {
+	global $db;
+	if(isset($_POST['btn-edit-books'])) {
+		$id 			= $db->real_escape_string($_POST['id']);
+		$isbn 			= $db->real_escape_string($_POST['isbn']);
+		$title 			= $db->real_escape_string($_POST['title']);
+		$category 		= $db->real_escape_string($_POST['category']);
+		$author 		= $db->real_escape_string($_POST['author']);
+		$publisher 		= $db->real_escape_string($_POST['publisher']);
+		$published_date = $db->real_escape_string($_POST['published_date']);
+		$description 	= $db->real_escape_string($_POST['description']);
+		$sql = "UPDATE pl_books_tbl SET 
+		isbn = '$isbn', title = '$title', category = '$category',
+		author = '$author', publisher = '$publisher', published_date = '$published_date',
+		description = '$description' WHERE id = '$id'";
+			$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>Information has been updated.</h4>",
+					timer: 500, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				},
+				function(){
+				  setTimeout(function(){
+				    location.href="modify-books.php?id=<?php echo$id?>";
+				  }, 500);
+				});
+				</script>
+			<?php
+		}		
+	}
+
+	if(isset($_POST['btn-delete-books'])) {
+		$id 	= $db->real_escape_string($_POST['id']);
+		$sql = "DELETE FROM pl_books_tbl WHERE id = '$id'";
+		$query = $db->query($sql);
+		if($query) {
+		?>	
+			<script type="text/javascript">
+			swal({   
+				title: "",  
+				text: "<h4>Book has been removed.</h4>",
+				timer: 500, 
+				html:  true,
+				type: 'success',  
+				showConfirmButton: true 
+			},
+			function(){
+			  setTimeout(function(){
+			    location.href="view-books.php";
+			  }, 500);
+			});
+			</script>
+		<?php
+		}
+	}
+}
+
+
+
+function add_books() {
+	global $db;
+	if(isset($_POST['btn-add-books'])) {
+		$isbn 				= $db->real_escape_string($_POST['isbn']);
+		$title 				= $db->real_escape_string($_POST['title']);
+		$category 			= $db->real_escape_string($_POST['category']);
+		$author 			= $db->real_escape_string($_POST['author']);
+		$publisher 			= $db->real_escape_string($_POST['publisher']);
+		$published_date 	= $db->real_escape_string($_POST['published_date']);
+		$description 		= $db->real_escape_string($_POST['description']);
+		$status 			= 'Available';
+		$sql 		 		= "SELECT isbn from pl_books_tbl WHERE isbn = '$isbn'";
+		$query 				= $db->query($sql);
+		$check 				= $query->num_rows;
+		if($check > 0) {
+			?>
+			<script type="text/javascript">
+			swal({   
+				title: "",  
+				text: "<h4>  This book with isbn # (<?php echo $isbn?>) is already existed.</h4>",
+				timer: 5000, 
+				html: true,
+				type: 'error',  
+				showConfirmButton: true 
+			});
+			</script>
+			<?php
+		} else {
+			$sql = "INSERT IGNORE INTO pl_books_tbl 
+			(isbn, title, category, author, publisher,
+			 description, status, published_date) 
+			 VALUES 
+			 ('$isbn', '$title', '$category', '$author',
+			  '$publisher', '$description', '$status', 
+			  '$published_date')";
+			$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>New book has been added.</h4>",
+					timer: 3000, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				});
+				</script>
+				<?php
+			}
+		}
+	}
+}
+
+function add_category() {
+	global $db;
+	if(isset($_POST['btn-add-category'])) {
+		$category 	= $db->real_escape_string($_POST['category']);
+		
+		$sql 		 	= "SELECT category from pl_books_category_tbl WHERE category = '$category'";
+		$query 			= $db->query($sql);
+		$check 			= $query->num_rows;
+		if($check > 0) {
+			?>
+			<script type="text/javascript">
+			swal({   
+				title: "",  
+				text: "<h4>  (<?php echo $category;?>) is already existed.</h4>",
+				timer: 5000, 
+				html: true,
+				type: 'error',  
+				showConfirmButton: true 
+			});
+			</script>
+			<?php
+		} else {
+			$sql = "INSERT IGNORE INTO pl_books_category_tbl (category) VALUES ('$category')";
+			$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>New Category has been added.</h4>",
+					timer: 3000, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				});
+				</script>
+				<?php
+			}
+		}
+	}
+}
+
+function edit_profile() {
+	global $db;
+	if (isset($_FILES['image']['tmp_name'])) {
+		$file		= $_FILES['image'][	'tmp_name'];
+		$image		= addslashes(file_get_contents($_FILES['image']['tmp_name']));
+		$image_name	= addslashes($_FILES['image']['name']);
+		move_uploaded_file($_FILES["image"]["tmp_name"],"../../uploads/" .$_FILES["image"]["name"]);
+		$id 		= $db->real_escape_string($_POST['id']);
+		$image 		= $db->real_escape_string("uploads/" .$_FILES["image"]["name"]);
+		$sql   		= "UPDATE pl_account_tbl SET image = '$image' WHERE id = $id";
+		$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>Profile picture has been updated.</h4>",
+					timer: 500, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				},
+				function(){
+				  setTimeout(function(){
+				    location.href="profile.php";
+				  }, 500);
+				});
+				</script>
+			<?php
+		}
+	}
+}
+
+function edit_information() {
+	global $db;
+	if (isset($_POST['btn-edit-information'])) {
+		$id 			= $db->real_escape_string($_POST['id']);
+		$username 		= $db->real_escape_string($_POST['username']);
+		$name 			= $db->real_escape_string($_POST['name']);
+		$email 			= $db->real_escape_string($_POST['email']);
+		$gender 		= $db->real_escape_string($_POST['gender']);
+		$sql = "UPDATE pl_account_tbl SET username = '$username', name = '$name', email = '$email', gender = '$gender' WHERE id = $id";
+		$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>Information has been updated.</h4>",
+					timer: 500, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				},
+				function(){
+				  setTimeout(function(){
+				    location.href="profile.php";
+				  }, 500);
+				});
+				</script>
+			<?php
+		}
+	}
+}
+
+function password_change() {
+	global $db;
+	if (isset($_POST['btn-edit-password'])) {
+		$id 			= $db->real_escape_string($_POST['id']);
+		$hash 		= $db->real_escape_string($_POST['password']);
+		$password = password_hash($hash,PASSWORD_DEFAULT);
+		$sql = "UPDATE pl_account_tbl SET password = '$password' WHERE id = $id";
+		$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>Password has been changed.</h4>",
+					timer: 500, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				},
+				function(){
+				  setTimeout(function(){
+				    location.href="profile.php";
+				  }, 500);
+				});
+				</script>
+			<?php
+		}
+	}
+}
+
+function notif() {
+	if(isset($_SESSION['borrow'])) {
+		?>
+		<script type="text/javascript">
+		swal({   
+			title: "",  
+			text: "<h4>Request has been sent!</h4>",
+			timer: 3000, 
+			html:  true,
+			type: 'success',  
+			showConfirmButton: true 
+		});
+		</script>
+		<?php
+		unset($_SESSION['borrow']);
+	}
+}
 function admin_logout() {
 	include 'functions/config.php';
 	unset($_SESSION['admin']); 
 	header('location: ../index.php');
 }
+
+function user_logout() {
+	include 'functions/config.php';
+	unset($_SESSION['user']); 
+	header('location: ../index.php');
+}
+

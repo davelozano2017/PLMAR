@@ -1,3 +1,17 @@
+<?php 
+include '../../functions/functions.php';
+if(!isset($_SESSION['user'])){
+header("Location: ../index.php");
+}
+$query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['user']);
+$row = $query->fetch_object();
+$name = $row->name;
+$image = $row->image;
+$email = $row->email;
+$username = $row->username;
+$gender = $row->gender;
+?>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -8,13 +22,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Pamantasan ng lungsod ng Marikina</title>
-  <link rel="icon" type="text/css" href="../images/logo.png">
+  <link rel="icon" type="text/css" href="../../images/logo.png">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="../dist/css/skins/skin-yellow.min.css">
+  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
+  <link rel="stylesheet" href="../../dist/css/skins/skin-yellow.min.css">
+  <link rel="stylesheet" type="text/css" href="../../dist/sweetalert/dist/sweetalert.css">
+  <link rel="stylesheet" type="text/css" href="../../dist/sweetalert/themes/twitter/twitter.css">
+  <script type="text/javascript" src="../../dist/sweetalert/dist/sweetalert.min.js"></script>
+
 
 </head>
 
@@ -27,7 +47,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Logo -->
     <a class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><img src="../images/logo.png" class="img-responsive"></span>
+      <span class="logo-mini"><img src="../../images/logo.png" class="img-responsive"></span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>PLMAR</b></span>
     </a>
@@ -46,28 +66,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="../../<?php echo $image?>" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs"><?php echo$name?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
-                <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
-                </p>
+                <img src="../../<?php echo $image?>" class="img-circle" alt="User Image">
+                <p><?php echo$name?></p>
               </li>
              
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="profile.php" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -98,48 +114,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-home"></i> <span>Home</span></a></li>
-        <li><a href="#"><i class="fa fa-book"></i> <span>Book Details</span></a></li>
+        <li class="active"><a href="home.php"><i class="fa fa-home"></i> <span>Home</span></a></li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-sitemap"></i> <span> Manage Transactions</span>
+            <i class="fa fa-book"></i> <span> Books</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li>
-              <a href="#"><i class="fa fa-circle-o"></i> Details
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Borrow</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Return</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Reserve</a></li>
-              </ul>
-            </li>
-
-            <li>
-              <a href="#"><i class="fa fa-circle-o"></i> History
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Borrow</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Return</a></li>
-              </ul>
-            </li>
-
+            <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
           </ul>
         </li>
-
-
-        <li class="header" style="color:#fff">LIBRARY HOURS</li>
-        <li class="header" style="color:#fff">MONDAY - FRIDAY 8:00 AM - 7:00 PM</li>
-        <li class="header" style="color:#fff">SATURDAY 8:00 AM - 5:00 PM</li>
+       
 
       </ul>
       <!-- /.sidebar-menu -->
@@ -153,15 +140,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <section class="content-header">
       <h1><i class="fa fa-home"></i> Home</h1>
       <ol class="breadcrumb">
-        <li class="active"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="col-md-4">
+    <div class="col-md-4">
         <!-- first -->
-        <img src="../images/rules-and-regulation.jpg" style="height:250px;width:100%" class="img-responsive">
+        <img src="../../images/rules-and-regulation.jpg" style="height:250px;width:100%" class="img-responsive">
         <p class="text-justify">
           <b>1.</b> All students entering the library must observe proper decorum and should wear their ID while inside the library.
         </p>
@@ -193,14 +180,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- second -->
 
       <div class="col-md-4">
-        <img src="../images/NewStudents.jpg" style="height:250px;width:100%" class="img-responsive">
+        <img src="../../images/NewStudents.jpg" style="height:250px;width:100%" class="img-responsive">
         <p class="text-justify">
          Click Create Account in right side of the login form. Enter your valid information to avoid future problem. for validation code please request it from librarian.
         </p>
       </div>
 
       <div class="col-md-4">
-        <img src="../images/our-system.jpg" style="height:250px;width:100%" class="img-responsive">
+        <img src="../../images/our-system.jpg" style="height:250px;width:100%" class="img-responsive">
         <p class="text-justify">
          Only student or member can use this system. on this system members can borrow book throught online system return and reserve book also they can check borrow details transaction and others. if you find bug or error please report it from librarian. 
          Thank you. 
@@ -221,15 +208,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Footer -->
   <footer class="main-footer">
     <strong>Copyright &copy; <?php echo date('Y')?> All rights reserved.
-    <div class="pull-right">
-      <strong> Library Hours: Monday - Friday: 8:00 AM - 7:00 PM | Saturday : 8:00 AM - 5:00 PM</strong>
-    </div>
     <div class="clearfix"></div>
   </footer>
   <div class="control-sidebar-bg"></div>
 </div>
-<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
-<script src="../bootstrap/js/bootstrap.min.js"></script>
-<script src="../dist/js/app.min.js"></script>
+<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../dist/js/app.min.js"></script>
+<script src="../../plugins/select2/select2.full.min.js"></script>
+<script src="../../dist/js/parsleyjs/dist/parsley.min.js"></script>
+<script type="text/javascript">
+   $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>
 </body>
 </html>

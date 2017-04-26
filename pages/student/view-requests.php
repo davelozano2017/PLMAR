@@ -1,12 +1,14 @@
 <?php 
 include '../../functions/functions.php';
-if(!isset($_SESSION['admin'])){
+if(!isset($_SESSION['user'])){
 header("Location: ../index.php");
 }
-$query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['admin']);
+$query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['user']);
 $row = $query->fetch_object();
 $name = $row->name;
+$student_id = $row->student_id;
 $image = $row->image;
+
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +44,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <body class="hold-transition skin-yellow sidebar-mini">
 <div class="wrapper">
-
+<?php notif()?>
   <!-- Main Header -->
   <header class="main-header">
 
@@ -100,52 +102,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
+
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search Book...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
       <!-- /.search form -->
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
-        <!-- Optionally, you can add icons to the links -->
-        <li ><a href="dashboard.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+      <li><a href="home.php"><i class="fa fa-home"></i> <span>Home</span></a></li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-book"></i> <span> Manage Books</span>
+            <i class="fa fa-book"></i> <span> Books</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
-            <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
           </ul>
         </li>
-
-        <li class="treeview active">
-          <a href="#">
-            <i class="fa fa-user"></i> <span> Manage Accounts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
-          </ul>
-        </li>
-
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-gear"></i> <span> Maintenance</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
-            <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
-          </ul>
-        </li>
-
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -156,11 +139,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1><i class="fa fa-eye"></i> View Student</h1>
+      <h1><i class="fa fa-eye"></i> View Requests</h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="#">Manage Account</a></li>
-        <li class="active"><a href="#">View Student</a></li>
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li class="active"><a href="#">View Requests</a></li>
       </ol>
     </section>
 
@@ -168,18 +151,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <section class="content">
     
     <div class="row">
-      <div class="col-md-12 col-xs-12">
-        <a href="add-students.php" class="btn btn-primary flat"><i class="fa fa-user-plus"></i> Add Student</a>
-      </div>
-    </div>
-    <br>
-    <div class="row">
       
         <div class="col-md-12 col-xs-12">
         <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><i class="fa fa-exclamation-circle"></i> List of students</h3>
+              <h3 class="box-title"><i class="fa fa-book"></i> List of requests</h3>
             </div>
             <!-- /.box-header -->
               <div class="box-body">
@@ -187,33 +164,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Student ID</th>
-                          <th>Name</th>
+                          <th>Book Title</th>
+                          <th>Request Date</th>
+                          <th>Approved Date</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
+                       
                          <?php 
                             global $db;
-                            $sql = "SELECT * FROM pl_account_tbl WHERE role = 1";
+                            $sql = "SELECT * FROM pl_request_tbl WHERE student_id = '$student_id'";
                             $i = 1;
                             $query = $db->query($sql);
                             $check = $query->num_rows;
                             if($check < 1) {
-                              echo '<td colspan=4><div class="alert alert-danger flat">No record found.</div></td>';
+                              echo '<td colspan=6><div class="alert alert-danger flat">No record found.</div></td>';
                             } else {
                             while ($row = $query->fetch_object()) {
                               echo 
                               '
                               <tr>
                               <td>'.$i++.'</td>
-                              <td>'.$row->student_id.'</td>
-                              <td>'.$row->name.'</td>
+                              <td>'.$row->book_title.'</td>
+                              <td>'.$row->request_date.'</td>
+                              <td>'.$row->approved_date.'</td>
+                              '?>
                               <td>
-                              <a href="modify-student.php?student_id='.$row->student_id.'" 
-                              class="btn btn-primary flat"><i class="fa fa-pencil"></i> Modify </a></td>
+                              <a href="#" onClick="returned(<?php echo$row->id?>)"
+                              class="btn btn-primary flat"><i class="fa fa-eye"></i> View </a></td>
+
                               </tr>
-                              ';
+                              <?php echo '';
                             }
                           }
                          ?>
@@ -345,6 +327,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         TableManageButtons.init();
       });
+
+     function returned($id) {
+      var id = $id;
+      alert(id);
+     }
     </script>
     <!-- /Datatables -->
 </script>

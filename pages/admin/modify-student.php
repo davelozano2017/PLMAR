@@ -3,10 +3,15 @@ include '../../functions/functions.php';
 if(!isset($_SESSION['admin'])){
 header("Location: ../index.php");
 }
+$query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['admin']);
+$row = $query->fetch_object();
+$name = $row->name;
+$image = $row->image;
+
 $query = $db->query("SELECT * FROM pl_account_tbl WHERE student_id = '".$_GET['student_id']."'");
 $row = $query->fetch_object();
 $student_id = $row->student_id;
-$name = $row->name;
+$sname = $row->name;
 $gender = $row->gender;
 $email = $row->email;
 ?>
@@ -46,7 +51,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Logo -->
     <a class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><img src="../images/logo.png" class="img-responsive"></span>
+      <span class="logo-mini"><img src="../../images/logo.png" class="img-responsive"></span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>PLMAR</b></span>
     </a>
@@ -97,23 +102,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search Book...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
         <!-- Optionally, you can add icons to the links -->
-        <li ><a href="#"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li ><a href="dashboard.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-book"></i> <span> Manage Books</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
+            <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
+            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+          </ul>
+        </li>
         <li class="treeview active">
           <a href="#">
             <i class="fa fa-user"></i> <span> Manage Accounts</span>
@@ -122,7 +128,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="add-students.php"><i class="fa fa-circle-o"></i> Student Account</a></li>
+            <li class="active"><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-gear"></i> <span> Maintenance</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
+            <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
           </ul>
         </li>
 
@@ -138,7 +157,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <section class="content-header">
       <h1><i class="fa fa-pencil"></i> Modify Student</h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboar</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="#">Manage Account</a></li>
         <li class="active"><a href="#">Modify Student</a></li>
       </ol>
@@ -146,6 +165,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Main content -->
     <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-xs-12">
+        <a class="btn btn-primary flat" href="view-students.php"><i class="fa fa-reply"></i> Back</a>
+      </div>
+    </div>
+    <br>
     <div class="row">
       
         <div class="col-md-12 col-xs-12">
@@ -167,7 +192,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <div class="form-group">
                   <label for="Name">Name</label>
-                  <input type="text" class="form-control"  value="<?php echo$name?>" name="name" required>
+                  <input type="text" class="form-control"  value="<?php echo$sname?>" name="name" required>
                 </div>
 
 
@@ -178,7 +203,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Gender</label>
-                  <select name="gender" class="form-control select2" style="width: 100%" required>
+                  <select name="gender" class="form-control" style="width: 100%" required>
                   <option value="<?php echo$gender?>" selected="selected"><?php echo$gender?></option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
