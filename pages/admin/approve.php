@@ -12,7 +12,7 @@ $title = $row->title;
 $status = 'Approved';
 $approved_date = date('F j, \ Y');
 
-$ssql = "UPDATE pl_request_tbl SET status = '$status', approved_date = '$approved_date' WHERE id = ".$_GET['id'];
+$ssql = "UPDATE pl_request_tbl SET status = '$status', approved_date = '$approved_date', book_return = 'No' WHERE id = ".$_GET['id'];
 $query = $db->query($ssql);
 
 if($query) {

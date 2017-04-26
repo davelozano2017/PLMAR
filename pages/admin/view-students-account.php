@@ -117,7 +117,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="treeview-menu">
             <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
             <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+            <li><a href="return-request.php"><i class="fa fa-circle-o"></i> Return Request</a></li>
+            <li><a href="approved-request.php"><i class="fa fa-circle-o"></i> Approved Request</a></li>
           </ul>
         </li>
 
@@ -129,7 +130,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+            <li class="active"><a href="view-students-account.php"><i class="fa fa-circle-o"></i> View Student Account</a></li>
+            <li><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
           </ul>
         </li>
 
@@ -187,7 +189,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Student ID</th>
+                          <th>Username</th>
                           <th>Name</th>
                           <th>Action</th>
                         </tr>
@@ -210,7 +212,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               <td>'.$row->student_id.'</td>
                               <td>'.$row->name.'</td>
                               <td>
-                              <a href="modify-student.php?student_id='.$row->student_id.'" 
+                              <a href="modify-student.php?username='.$row->student_id.'" 
                               class="btn btn-primary flat"><i class="fa fa-pencil"></i> Modify </a></td>
                               </tr>
                               ';

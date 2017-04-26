@@ -102,18 +102,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search Book...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
@@ -174,7 +162,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                        
                          <?php 
                             global $db;
-                            $sql = "SELECT * FROM pl_request_tbl WHERE student_id = '$student_id'";
+                            $sql = "SELECT * FROM pl_request_tbl WHERE student_id = '$student_id' AND book_return = 'No'";
                             $i = 1;
                             $query = $db->query($sql);
                             $check = $query->num_rows;
@@ -182,6 +170,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               echo '<td colspan=6><div class="alert alert-danger flat">No record found.</div></td>';
                             } else {
                             while ($row = $query->fetch_object()) {
+                              $book_title = $row->book_title;
                               echo 
                               '
                               <tr>
@@ -195,7 +184,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               class="btn btn-primary flat"><i class="fa fa-eye"></i> View </a></td>
 
                               </tr>
-                              <?php echo '';
+                              <?php
                             }
                           }
                          ?>
@@ -330,7 +319,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
      function returned($id) {
       var id = $id;
-      alert(id);
+      swal({
+      title: "",
+      text: "<h4>Are you sure you want to return this book?</h4>",
+      type: "warning",
+      html: true,
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes, I'm sure!",
+      closeOnConfirm: false
+      },
+      function(){
+        location.href="return.php?id="+id;
+      });
      }
     </script>
     <!-- /Datatables -->

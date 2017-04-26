@@ -117,7 +117,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="treeview-menu">
             <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
             <li class="active"><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+            <li><a href="return-request.php"><i class="fa fa-circle-o"></i> Return Request</a></li>
+            <li><a href="approved-request.php"><i class="fa fa-circle-o"></i> Approved Request</a></li>
           </ul>
         </li>
 
@@ -129,7 +130,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+            <li><a href="view-students-account.php"><i class="fa fa-circle-o"></i> View Student Account</a></li>
+            <li><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
           </ul>
         </li>
 
@@ -353,7 +355,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       var id = $id;
       swal({
       title: "",
-      text: "<h4>Are you sure you want to approve this <br> request by <?php echo $stud_name?>",
+      text: "<h4>Are you sure you want to approve this request?</h4>",
       type: "warning",
       html: true,
       showCancelButton: true,

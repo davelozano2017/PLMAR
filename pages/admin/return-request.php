@@ -43,7 +43,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <body class="hold-transition skin-yellow sidebar-mini">
 <div class="wrapper">
-
+<?php notif()?>
   <!-- Main Header -->
   <header class="main-header">
 
@@ -118,7 +118,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="treeview-menu">
             <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
             <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li class="active"><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+            <li class="active"><a href="return-request.php"><i class="fa fa-circle-o"></i> Return Request</a></li>
+            <li><a href="approved-request.php"><i class="fa fa-circle-o"></i> Approved Request</a></li>
           </ul>
         </li>
 
@@ -130,7 +131,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+            <li><a href="view-students-account.php"><i class="fa fa-circle-o"></i> View Student Account</a></li>
+            <li><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
           </ul>
         </li>
 
@@ -157,11 +159,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1><i class="fa fa-check-circle"></i> Approved Request</h1>
+      <h1><i class="fa fa-check-circle"></i> Return Request</h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="#">Manage Books</a></li>
-        <li class="active"><a href="#">Approved Request</a></li>
+        <li class="active"><a href="#">Return Request</a></li>
       </ol>
     </section>
 
@@ -174,25 +176,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><i class="fa fa-list"></i> List of approved requests</h3>
+              <h3 class="box-title"><i class="fa fa-list"></i> List of return requests</h3>
             </div>
             <!-- /.box-header -->
               <div class="box-body">
-                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th>#</th>
                           <th>Student ID</th>
-                          <th>Name</th>
                           <th>Book Title</th>
-                          <th>Approved Date</th>
+                          <th>Return Date</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                        
                          <?php 
                             global $db;
-                            $sql = "SELECT * FROM pl_request_tbl WHERE status = 'Approved'";
+                            $sql = "SELECT * FROM pl_return_books_tbl WHERE status = 'Waiting for response'";
                             $i = 1;
                             $query = $db->query($sql);
                             $check = $query->num_rows;
@@ -200,15 +202,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               echo '<td colspan=6><div class="alert alert-danger flat">No record found.</div></td>';
                             } else {
                             while ($row = $query->fetch_object()) {
-                              $stud_name = $row->name;
                               echo 
                               '
                               <tr>
                               <td>'.$i++.'</td>
                               <td>'.$row->student_id.'</td>
-                              <td>'.$row->name.'</td>
                               <td>'.$row->book_title.'</td>
-                              <td>'.$row->approved_date.'</td>
+                              <td>'.$row->returned_date.'</td>
+                              <td><a class="btn btn-primary flat" href="#" onClick="approve('.$row->id.')"><i class="fa fa-check-circle"></i> Approve</a></td>
                               </tr>
                               ';
 
@@ -331,7 +332,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       var id = $id;
       swal({
       title: "",
-      text: "<h4>Are you sure you want to approve this <br> request by <?php echo $stud_name?>",
+      text: "<h4>Are you sure you want to approve this request?",
       type: "warning",
       html: true,
       showCancelButton: true,
@@ -340,7 +341,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       closeOnConfirm: false
     },
     function(){
-      location.href="approve.php?id="+id;
+      location.href="return-approve.php?id="+id;
     });
 
     }

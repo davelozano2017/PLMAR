@@ -28,7 +28,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Select2 -->
   <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
   <link rel="stylesheet" href="../../dist/css/skins/skin-yellow.min.css">
-  <link rel="stylesheet" type="text/css" href="../../dist/css/jquery.ui.css">
   <link rel="stylesheet" type="text/css" href="../../dist/sweetalert/dist/sweetalert.css">
   <link rel="stylesheet" type="text/css" href="../../dist/sweetalert/themes/twitter/twitter.css">
   <script type="text/javascript" src="../../dist/sweetalert/dist/sweetalert.min.js"></script>
@@ -96,6 +95,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
+
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
@@ -115,7 +115,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <li><a href="approved-request.php"><i class="fa fa-circle-o"></i> Approved Request</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview active">
           <a href="#">
             <i class="fa fa-user"></i> <span> Manage Accounts</span>
             <span class="pull-right-container">
@@ -124,11 +124,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </a>
           <ul class="treeview-menu">
             <li><a href="view-students-account.php"><i class="fa fa-circle-o"></i> View Student Account</a></li>
-            <li><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
+            <li class="active"><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
           </ul>
         </li>
 
-        <li class="treeview active">
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-gear"></i> <span> Maintenance</span>
             <span class="pull-right-container">
@@ -136,7 +136,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
+            <li><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
             <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
           </ul>
         </li>
@@ -151,11 +151,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1><i class="fa fa-book"></i> Add Books Category</h1>
+      <h1><i class="fa fa-user-plus"></i> Add Librarian</h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="#">Maintenance</a></li>
-        <li class="active"><a href="#">Add Books Category</a></li>
+        <li><a href="#">Manage Account</a></li>
+        <li class="active"><a href="#">Add Librarian</a></li>
       </ol>
     </section>
 
@@ -164,7 +164,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <div class="row">
       <div class="col-md-12 col-xs-12">
-        <a class="btn btn-primary flat" href="view-category.php"><i class="fa fa-reply"></i> Back</a>
+        <a class="btn btn-primary flat" href="view-librarian-account.php"><i class="fa fa-reply"></i> Back</a>
       </div>
     </div>
     <br>
@@ -174,21 +174,44 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><i class="fa fa-exclamation-circle"></i> Create New Category</h3>
+              <h3 class="box-title"><i class="fa fa-exclamation-circle"></i> Librarian Information</h3>
             </div>
             <!-- /.box-header -->
-            <?php add_category()?>
+            <?php add()?>
             <!-- form start -->
             <form role="form" method="POST" data-parsley-validate>
               <div class="box-body">
 
                 <div class="form-group">
-                  <label for="category">Category</label>
-                  <input type="text" class="form-control"  name="category" required>
+                  <label for="StudentID">Librarian ID</label>
+                  <input type="hidden" class="form-control"  name="level" value=0 required>
+                  <input type="text" class="form-control"  name="student_id" required>
                 </div>
 
+                <div class="form-group">
+                  <label for="Name">Name</label>
+                  <input type="text" class="form-control"  name="name" required>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email Address</label>
+                  <input type="email" class="form-control" name="email" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="Gender">Gender</label>
+                  <select name="gender" class="form-control" style="width: 100%" required>
+                  <option value="Male" selected="selected">Male</option>
+                  <option value="Female">Female</option>
+                  </select>
+                </div>
+               
+              </div>
+              <!-- /.box-body -->
+
               <div class="box-footer">
-                <button type="submit" name="btn-add-category" class="btn btn-primary flat"><i class="fa fa-plus-circle"> Add Category</i></button>
+                <button type="submit" name="btn-add" class="btn btn-primary flat"><i class="fa fa-user-plus"> Add Librarian</i></button>
               </div>
             </form>
           </div>
@@ -213,7 +236,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../../bootstrap/js/bootstrap.min.js"></script>
 <script src="../../dist/js/app.min.js"></script>
-<script src="../../dist/js/jquery-ui.js"></script>
 <script src="../../plugins/select2/select2.full.min.js"></script>
 <script src="../../dist/js/parsleyjs/dist/parsley.min.js"></script>
 <script type="text/javascript">
@@ -221,10 +243,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     //Initialize Select2 Elements
     $(".select2").select2();
   });
-
-   $( function() {
-    $( "#datepicker" ).datepicker({  maxDate: '0'});
-  } );
 </script>
 </body>
 </html>

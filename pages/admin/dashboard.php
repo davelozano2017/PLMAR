@@ -8,11 +8,17 @@ $row = $query->fetch_object();
 $name = $row->name;
 $image = $row->image;
 $q = $db->query("SELECT * FROM pl_account_tbl WHERE role = 1");
-$count_new_student = $q->num_rows;
+$count_student_account = $q->num_rows;
 $qq = $db->query("SELECT * FROM pl_books_tbl");
 $count_new_books = $qq->num_rows;
 $qqq = $db->query("SELECT * FROM pl_books_tbl WHERE status = 'Unavailable'");
 $count_unavailable_books = $qqq->num_rows;
+$qqqq = $db->query("SELECT * FROM pl_request_tbl WHERE status = 'Approved'");
+$count_approved_request = $qqqq->num_rows;
+$qqqqq = $db->query("SELECT * FROM pl_request_tbl WHERE status = 'Pending'");
+$count_pending_request = $qqqqq->num_rows;
+$qqqqqq = $db->query("SELECT * FROM pl_account_tbl WHERE role = 0");
+$count_librarian_account = $qqqqqq->num_rows;
 ?>
 
 <!DOCTYPE html>
@@ -116,7 +122,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="treeview-menu">
             <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
             <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+            <li><a href="return-request.php"><i class="fa fa-circle-o"></i> Return Request</a></li>
+            <li><a href="approved-request.php"><i class="fa fa-circle-o"></i> Approved Request</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -127,7 +134,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+            <li><a href="view-students-account.php"><i class="fa fa-circle-o"></i> View Student Account</a></li>
+            <li><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
           </ul>
         </li>
 
@@ -169,9 +177,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- small box -->
           <div class="small-box bg-blue">
             <div class="inner">
-              <h3><?php echo$count_new_student?></h3>
+              <h3><?php echo$count_student_account?></h3>
 
               <p>New Students</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-user"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3><?php echo$count_librarian_account?></h3>
+
+              <p>New Librarian</p>
             </div>
             <div class="icon">
               <i class="fa fa-user"></i>
@@ -211,6 +237,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <div class="icon">
               <i class="fa fa-book"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-primary">
+            <div class="inner">
+              <h3><?php echo$count_approved_request?></h3>
+
+              <p>Approved Request</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-thumbs-up"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3><?php echo$count_pending_request?></h3>
+
+              <p>Pending Request</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-refresh"></i>
             </div>
             <a href="#" class="small-box-footer">
               More info <i class="fa fa-arrow-circle-right"></i>

@@ -8,9 +8,10 @@ $row = $query->fetch_object();
 $name = $row->name;
 $image = $row->image;
 
-$query = $db->query("SELECT * FROM pl_account_tbl WHERE student_id = '".$_GET['student_id']."'");
+$query = $db->query("SELECT * FROM pl_account_tbl WHERE username = '".$_GET['username']."'");
 $row = $query->fetch_object();
-$student_id = $row->student_id;
+$id = $row->id;
+$username = $row->username;
 $sname = $row->name;
 $gender = $row->gender;
 $email = $row->email;
@@ -117,7 +118,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="treeview-menu">
             <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
             <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+            <li><a href="return-request.php"><i class="fa fa-circle-o"></i> Return Request</a></li>
+            <li><a href="approved-request.php"><i class="fa fa-circle-o"></i> Approved Request</a></li>
           </ul>
         </li>
         <li class="treeview active">
@@ -128,7 +130,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+            <li class="active"><a href="view-students-account.php"><i class="fa fa-circle-o"></i> View Student Account</a></li>
+            <li><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
           </ul>
         </li>
 
@@ -167,7 +170,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <section class="content">
     <div class="row">
       <div class="col-md-12 col-xs-12">
-        <a class="btn btn-primary flat" href="view-students.php"><i class="fa fa-reply"></i> Back</a>
+        <a class="btn btn-primary flat" href="view-students-account.php"><i class="fa fa-reply"></i> Back</a>
       </div>
     </div>
     <br>
@@ -187,7 +190,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <div class="form-group">
                   <label for="StudentID">Student ID</label>
-                  <input type="text" class="form-control"  value="<?php echo $student_id ?>" name="student_id" required>
+                  <input type="hidden" value="<?php echo $id ?>" name="id" required>
+                  <input type="text" class="form-control"  value="<?php echo $username ?>" name="username" required>
                 </div>
 
                 <div class="form-group">

@@ -118,7 +118,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="treeview-menu">
             <li class="active"><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
             <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+            <li><a href="return-request.php"><i class="fa fa-circle-o"></i> Return Request</a></li>
+            <li><a href="approved-request.php"><i class="fa fa-circle-o"></i> Approved Request</a></li>
           </ul>
         </li>
 
@@ -130,7 +131,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+            <li><a href="view-students-account.php"><i class="fa fa-circle-o"></i> View Student Account</a></li>
+            <li><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
           </ul>
         </li>
 
@@ -207,6 +209,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               echo '<td colspan=6><div class="alert alert-danger flat">No record found.</div></td>';
                             } else {
                             while ($row = $query->fetch_object()) {
+                              $stat = $row->status;
+                              if($stat == 'Unavailable') {
+                                $status = '<label style="padding:5px" class="label label-danger">Unavailable</label>';
+                              } else {
+                                $status = '<label style="padding:5px" class="label label-success">Available</label>';
+                              }
                               echo 
                               '
                               <tr>
@@ -214,7 +222,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               <td>'.$row->isbn.'</td>
                               <td>'.$row->title.'</td>
                               <td>'.$row->author.'</td>
-                              <td>'.$row->status.'</td>
+                              <td>'.$status.'</td>
                               <td>
                               <a href="modify-books.php?id='.$row->id.'" 
                               class="btn btn-primary flat"><i class="fa fa-pencil"></i> Modify </a></td>

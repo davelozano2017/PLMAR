@@ -111,7 +111,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="treeview-menu">
             <li><a href="view-books.php"><i class="fa fa-circle-o"></i> View Books</a></li>
             <li><a href="book-requests.php"><i class="fa fa-circle-o"></i> Book Requests</a></li>
-            <li><a href="request-approved.php"><i class="fa fa-circle-o"></i> Request Approved</a></li>
+            <li><a href="return-request.php"><i class="fa fa-circle-o"></i> Return Request</a></li>
+            <li><a href="approved-request.php"><i class="fa fa-circle-o"></i> Approved Request</a></li>
           </ul>
         </li>
         <li class="treeview active">
@@ -122,7 +123,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="view-students.php"><i class="fa fa-circle-o"></i> View Account</a></li>
+            <li class="active"><a href="view-students-account.php"><i class="fa fa-circle-o"></i> View Student Account</a></li>
+            <li><a href="view-librarian-account.php"><i class="fa fa-circle-o"></i> View Librarian Account</a></li>
           </ul>
         </li>
 
@@ -162,7 +164,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <div class="row">
       <div class="col-md-12 col-xs-12">
-        <a class="btn btn-primary flat" href="view-students.php"><i class="fa fa-reply"></i> Back</a>
+        <a class="btn btn-primary flat" href="view-students-account.php"><i class="fa fa-reply"></i> Back</a>
       </div>
     </div>
     <br>
@@ -175,13 +177,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <h3 class="box-title"><i class="fa fa-exclamation-circle"></i> Student Information</h3>
             </div>
             <!-- /.box-header -->
-            <?php add_student()?>
+            <?php add()?>
             <!-- form start -->
             <form role="form" method="POST" data-parsley-validate>
               <div class="box-body">
 
                 <div class="form-group">
                   <label for="StudentID">Student ID</label>
+                  <input type="hidden" class="form-control"  name="level" value=1 required>
                   <input type="text" class="form-control"  name="student_id" required>
                 </div>
 
@@ -208,7 +211,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" name="btn-add-students" class="btn btn-primary flat"><i class="fa fa-user-plus"> Add Student</i></button>
+                <button type="submit" name="btn-add" class="btn btn-primary flat"><i class="fa fa-user-plus"> Add Student</i></button>
               </div>
             </form>
           </div>

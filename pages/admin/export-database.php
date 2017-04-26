@@ -7,6 +7,16 @@ $query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['admin'
 $row = $query->fetch_object();
 $name = $row->name;
 $image = $row->image;
+$q = $db->query("SELECT * FROM pl_account_tbl WHERE role = 1");
+$count_new_student = $q->num_rows;
+$qq = $db->query("SELECT * FROM pl_books_tbl");
+$count_new_books = $qq->num_rows;
+$qqq = $db->query("SELECT * FROM pl_books_tbl WHERE status = 'Unavailable'");
+$count_unavailable_books = $qqq->num_rows;
+$qqqq = $db->query("SELECT * FROM pl_request_tbl WHERE status = 'Approved'");
+$count_approved_request = $qqqq->num_rows;
+$qqqqq = $db->query("SELECT * FROM pl_request_tbl WHERE status = 'Pending'");
+$count_pending_request = $qqqqq->num_rows;
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +38,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Select2 -->
   <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
   <link rel="stylesheet" href="../../dist/css/skins/skin-yellow.min.css">
-  <link rel="stylesheet" type="text/css" href="../../dist/css/jquery.ui.css">
   <link rel="stylesheet" type="text/css" href="../../dist/sweetalert/dist/sweetalert.css">
   <link rel="stylesheet" type="text/css" href="../../dist/sweetalert/themes/twitter/twitter.css">
   <script type="text/javascript" src="../../dist/sweetalert/dist/sweetalert.min.js"></script>
@@ -100,7 +109,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
         <!-- Optionally, you can add icons to the links -->
-        <li ><a href="dashboard.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-book"></i> <span> Manage Books</span>
@@ -136,8 +145,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
-            <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
+            <li><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
+            <li class="active"><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
           </ul>
         </li>
 
@@ -151,11 +160,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1><i class="fa fa-book"></i> Add Books Category</h1>
+      <h1><i class="fa fa-database"></i> Export Database</h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="#">Maintenance</a></li>
-        <li class="active"><a href="#">Add Books Category</a></li>
+        <li><a href="#"><i class="fa fa-database"></i> Database</a></li>
       </ol>
     </section>
 
@@ -163,37 +171,82 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <section class="content">
     
     <div class="row">
-      <div class="col-md-12 col-xs-12">
-        <a class="btn btn-primary flat" href="view-category.php"><i class="fa fa-reply"></i> Back</a>
-      </div>
-    </div>
-    <br>
-    <div class="row">
       
-        <div class="col-md-12 col-xs-12">
-        <!-- general form elements -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"><i class="fa fa-exclamation-circle"></i> Create New Category</h3>
-            </div>
-            <!-- /.box-header -->
-            <?php add_category()?>
-            <!-- form start -->
-            <form role="form" method="POST" data-parsley-validate>
-              <div class="box-body">
+        <?php
+    set_time_limit(0);
+    if(!isset($_SESSION['set_time_limit']))
+    $file = backup_tables('localhost','root','','plmar');
+    ?>
+    <script type="text/javascript">
+    swal({   
+      title: "Database successfully backuped!",  
+      text: "Please check your database folder. \n Database Name: <?php echo$file?>",
+       timer: 8000, 
+       type: "success",  
+       showConfirmButton: false 
+      });
+    setTimeout("location.href = 'dashboard.php'",3000);
+    </script>
+    <?php 
+    /* backup the db OR just a table */
+    function backup_tables($host,$user,$pass,$name,$tables = '*')
+    {
+        $return = '';
+        $db = mysqli_connect($host,$user,$pass,$name);
+        
+        //get all of the tables
+        if($tables == '*')
+        {
+            $tables = array();
+            $result = mysqli_query($db,'SHOW TABLES');
+            while($row = mysqli_fetch_row($result))
+            {
+                $tables[] = $row[0];
+            }
+        }
+        else
+        {
+            $tables = is_array($tables) ? $tables : explode(',',$tables);
+        }
+        
+        //cycle through
+        foreach($tables as $table)
+        {
+            $result = mysqli_query($db,'SELECT * FROM '.$table);
+            $num_fields = mysqli_num_fields($result);
+            
+            $return.= 'DROP TABLE IF EXISTS '.$table.';';
+            $row2 = mysqli_fetch_row(mysqli_query($db,'SHOW CREATE TABLE '.$table));
+            $return.= "\n\n".$row2[1].";\n\n";
+            
+            for ($i = 0; $i < $num_fields; $i++) 
+            {
+                while($row = mysqli_fetch_row($result))
+                {
+                    $return.= 'INSERT INTO '.$table.' VALUES(';
+                    for($j=0; $j<$num_fields; $j++) 
+                    {
+                        $row[$j] = addslashes($row[$j]);
+                        $row[$j] = str_replace("\n", '\n',$row[$j]);
+                        if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
+                        if ($j<($num_fields-1)) { $return.= ','; }
+                    }
+                    $return.= ");\n";
+                }
+            }
+            $return.="\n\n\n";
+        }
+        
+        //save file
+        $filename = 'plmar-'.date('d-M-Y h-i D').'.sql';
+        $handle = fopen('../../database/'.$filename,'w+');
+        fwrite($handle,$return);
+        fclose($handle);
+        return $filename;
+    }
+    ?>
 
-                <div class="form-group">
-                  <label for="category">Category</label>
-                  <input type="text" class="form-control"  name="category" required>
-                </div>
 
-              <div class="box-footer">
-                <button type="submit" name="btn-add-category" class="btn btn-primary flat"><i class="fa fa-plus-circle"> Add Category</i></button>
-              </div>
-            </form>
-          </div>
-          <!-- /.box -->
-          </div>
 
     </div>
 
@@ -213,7 +266,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../../bootstrap/js/bootstrap.min.js"></script>
 <script src="../../dist/js/app.min.js"></script>
-<script src="../../dist/js/jquery-ui.js"></script>
 <script src="../../plugins/select2/select2.full.min.js"></script>
 <script src="../../dist/js/parsleyjs/dist/parsley.min.js"></script>
 <script type="text/javascript">
@@ -221,10 +273,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     //Initialize Select2 Elements
     $(".select2").select2();
   });
-
-   $( function() {
-    $( "#datepicker" ).datepicker({  maxDate: '0'});
-  } );
 </script>
 </body>
 </html>

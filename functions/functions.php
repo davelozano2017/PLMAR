@@ -61,9 +61,12 @@ function login() {
 }
 
 
-function add_student() {
+function add() {
 	global $db;
-	if(isset($_POST['btn-add-students'])) {
+	include 'PHPMailerAutoload.php';
+	if(isset($_POST['btn-add'])) {
+		$level 			= $db->real_escape_string($_POST['level']);
+		if($level == 0) {$role = 0;} elseif($level == 1) {$role = 1;}
 		$student_id 	= $db->real_escape_string($_POST['student_id']);
 		$name 			= $db->real_escape_string($_POST['name']);
 		$email 			= $db->real_escape_string($_POST['email']);
@@ -96,16 +99,62 @@ function add_student() {
 			</script>
 			<?php
 		} else {
+			$mailer = new PHPMailer();
+			$mailer->IsSMTP();
+			$mailer->Host = 'smtp.gmail.com:465';
+			$mailer->SMTPAuth = TRUE;
+			$mailer->Port = 465;
+			$mailer->mailer="smtp";
+			$mailer->SMTPSecure = 'ssl'; 
+			$mailer->IsHTML(true);
+			$mailer->SMTPOptions = array('ssl' => array('verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true));
+			$mailer->Username = 'metrocakeshop@gmail.com'; 
+			$mailer->Password = 'password!@#$'; 
+			$mailer->FromName = 'Pamantasan ng Lungsod ng Marikina - Account Information.';
+			$mailer->Body =  
+			'
+			<div style="max-width:92%;border-left:solid 1px #313d49;border-right:solid 1px #313d49;border-top:solid 1px #313d49;border-bottom:solid 1px #313d49;background-color:#f5f5f5;padding:10px;text-align:center">
+
+	        		<h3 style="color:#000">PAMANTASAN NG LUNGSOD NG MARIKINA</h3>
+
+	        	</div>
+
+	        	<div style="max-width:92%;background-color:#ffffff;border-left:1px solid #313d49;border-right:solid 1px #313d49;padding:10px;">
+
+	        		<h4>Hello '.$name.',</h4>
+
+	        		<h4>You are now registered. Please login with this credentials</h4>
+	        		<a href="http://localhost/plmar/pages/index.php" 
+	        		style="float:right;background:#313d49;text-decoration:none;padding:10px;color:#fff;
+	        		font-weight:bolder">
+	        		CLICK ME TO LOGIN</a>
+	        		<h4>Username: <i>'.$student_id.'</i></h4>
+	        		<h4>Password: <i>12345</i></h4>
+
+	        	</div>
+
+	        	<div style="width:92%;background-color:#313d49;border-left:1px solid #313d49;border-right:solid 1px #313d49;padding:10px;text-align:center">
+
+	        		<h4 style="color:#fff">All Rights Reserved @ '.date('Y').'</h4>
+
+	        	</div>
+			';
+			$mailer->Subject = 'Pamantasan ng Lungsod ng Marikina - Account Information.';
+			$mailer->AddAddress($email);
+			if(!$mailer->send()) {
+					echo 'Message could not be sent.';
+					echo 'Mailer Error: ' . $mailer->ErrorInfo;
+			} else {
 			$sql = "INSERT IGNORE INTO pl_account_tbl 
 			(image, student_id, name, email, gender, username, password, role) VALUES 
-			('$image', '$student_id', '$name', '$email', '$gender', '$student_id', '$password',1)";
+			('$image', '$student_id', '$name', '$email', '$gender', '$student_id', '$password','$role')";
 			$query = $db->query($sql);
 			if($query) {
 				?>
 				<script type="text/javascript">
 				swal({   
 					title: "",  
-					text: "<h4>New student has been added.</h4>",
+					text: "<h4>New account has been added.</h4>",
 					timer: 3000, 
 					html:  true,
 					type: 'success',  
@@ -113,6 +162,7 @@ function add_student() {
 				});
 				</script>
 				<?php
+				}
 			}
 		}
 	}
@@ -121,13 +171,14 @@ function add_student() {
 function modify_student() {
 	global $db;
 	if(isset($_POST['btn-edit-students'])) {
-		$student_id 	= $db->real_escape_string($_POST['student_id']);
+		$id 			= $db->real_escape_string($_POST['id']);
+		$username 		= $db->real_escape_string($_POST['username']);
 		$name 			= $db->real_escape_string($_POST['name']);
 		$email 			= $db->real_escape_string($_POST['email']);
 		$gender 		= $db->real_escape_string($_POST['gender']);
 		$sql = "UPDATE pl_account_tbl SET 
-		student_id = '$student_id', name = '$name', email = '$email', 
-		gender = '$gender' WHERE student_id = '$student_id'";
+		student_id = '$username', username = '$username', name = '$name', email = '$email', 
+		gender = '$gender' WHERE id = $id";
 			$query = $db->query($sql);
 			if($query) {
 				?>
@@ -142,7 +193,7 @@ function modify_student() {
 				},
 				function(){
 				  setTimeout(function(){
-				    location.href="modify-student.php?student_id=<?php echo$student_id?>";
+				    location.href="modify-student.php?username=<?php echo$username?>";
 				  }, 500);
 				});
 				</script>
@@ -151,9 +202,9 @@ function modify_student() {
 	}
 
 	if(isset($_POST['btn-delete-students'])) {
-		$student_id 	= $db->real_escape_string($_POST['student_id']);
-		$sql = "DELETE FROM pl_account_tbl WHERE student_id = '$student_id'";
-		$query = $db->query($sql);
+		$id 	= $db->real_escape_string($_POST['id']);
+		$sql 	= "DELETE FROM pl_account_tbl WHERE id = $id";
+		$query 	= $db->query($sql);
 		if($query) {
 		?>	
 			<script type="text/javascript">
@@ -167,7 +218,66 @@ function modify_student() {
 			},
 			function(){
 			  setTimeout(function(){
-			    location.href="view-students.php";
+			    location.href="view-students-account.php";
+			  }, 500);
+			});
+			</script>
+		<?php
+		}
+	}
+}
+
+function modify_librarian() {
+	global $db;
+	if(isset($_POST['btn-edit-librarian'])) {
+		$id 			= $db->real_escape_string($_POST['id']);
+		$username 		= $db->real_escape_string($_POST['username']);
+		$name 			= $db->real_escape_string($_POST['name']);
+		$email 			= $db->real_escape_string($_POST['email']);
+		$gender 		= $db->real_escape_string($_POST['gender']);
+		$sql = "UPDATE pl_account_tbl SET 
+		student_id = '$username', username = '$username', name = '$name', email = '$email', 
+		gender = '$gender' WHERE id = $id";
+			$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>Student Information has been updated.</h4>",
+					timer: 500, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				},
+				function(){
+				  setTimeout(function(){
+				    location.href="modify-librarian.php?username=<?php echo$username?>";
+				  }, 500);
+				});
+				</script>
+			<?php
+		}		
+	}
+
+	if(isset($_POST['btn-delete-librarian'])) {
+		$username 	= $db->real_escape_string($_POST['username']);
+		$sql = "DELETE FROM pl_account_tbl WHERE username = '$username'";
+		$query = $db->query($sql);
+		if($query) {
+		?>	
+			<script type="text/javascript">
+			swal({   
+				title: "",  
+				text: "<h4>Librarian has been removed.</h4>",
+				timer: 500, 
+				html:  true,
+				type: 'success',  
+				showConfirmButton: true 
+			},
+			function(){
+			  setTimeout(function(){
+			    location.href="view-librarian-account.php";
 			  }, 500);
 			});
 			</script>
@@ -502,6 +612,39 @@ function notif() {
 		<?php
 		unset($_SESSION['borrow']);
 	}
+	if(isset($_SESSION['returning'])) {
+		?>
+		<script type="text/javascript">
+		swal({   
+			title: "",  
+			text: "<h4>Please wait for the confirmation of the librarian. Thank you!</h4>",
+			timer: 3000, 
+			html:  true,
+			type: 'success',  
+			showConfirmButton: true 
+		});
+		</script>
+		<?php
+		unset($_SESSION['returning']);
+	}
+
+	if(isset($_SESSION['returned'])) {
+		?>
+		<script type="text/javascript">
+		swal({   
+			title: "",  
+			text: "<h4>Book has been returned!</h4>",
+			timer: 3000, 
+			html:  true,
+			type: 'success',  
+			showConfirmButton: true 
+		});
+		</script>
+		<?php
+		unset($_SESSION['returned']);
+	}
+
+
 }
 function admin_logout() {
 	include 'functions/config.php';
