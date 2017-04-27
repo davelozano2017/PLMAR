@@ -209,9 +209,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               <td>'.$row->student_id.'</td>
                               <td>'.$row->book_title.'</td>
                               <td>'.$row->returned_date.'</td>
-                              <td><a class="btn btn-primary flat" href="#" onClick="approve('.$row->id.')"><i class="fa fa-check-circle"></i> Approve</a></td>
+                              '?>
+                                <td>
+                                  <a class="btn btn-primary flat" 
+                                    href="#" onClick="approve(<?php echo$row->id?>,'<?php echo$row->book_title?>')">
+                                    <i class="fa fa-check-circle"></i> 
+                                    Approve
+                                  </a>
+                                </td>
                               </tr>
-                              ';
+                              <?php '';
 
                             }
                           }
@@ -328,11 +335,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       });
 
 
-    function approve($id) {
+    function approve($id,$book_title) {
       var id = $id;
+      var title = $book_title;
       swal({
       title: "",
-      text: "<h4>Are you sure you want to approve this request?",
+      text: "<h4>Are you sure you want to approve this request?</h4>",
       type: "warning",
       html: true,
       showCancelButton: true,
@@ -341,7 +349,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       closeOnConfirm: false
     },
     function(){
-      location.href="return-approve.php?id="+id;
+      location.href="return-approve.php?id="+id+"&title="+title;
     });
 
     }
