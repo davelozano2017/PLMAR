@@ -213,7 +213,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               <td>'.$row->request_date.'</td>
                               <td>
                               ';?>
-                              <a href="#" onClick="approve(<?php echo$row->id?>)"
+                              <a href="#" onClick="approve('<?php echo$row->id?>','<?php echo$row->book_title?>')"
                               class="btn btn-primary flat"><i class="fa fa-check-circle"></i> Approve </a></td>
                               </tr>
                               <?php 
@@ -351,8 +351,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       });
 
 
-    function approve($id) {
+    function approve($id,$book_title) {
       var id = $id;
+      var title = $book_title;
       swal({
       title: "",
       text: "<h4>Are you sure you want to approve this request?</h4>",
@@ -364,7 +365,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       closeOnConfirm: false
     },
     function(){
-      location.href="approve.php?id="+id;
+      location.href="approve.php?id="+id+"&title="+title;
     });
 
     }

@@ -16,6 +16,7 @@ $category = $row->category;
 $author = $row->author;
 $publisher = $row->publisher;
 $status = $row->status;
+$copies = $row->copies;
 $published_date = $row->published_date;
 $description = $row->description;
 ?>
@@ -182,6 +183,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="form-group">
                   <label for="author">Author</label>
                   <p class="form-control"><?php echo$author?></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="Copies">Copies</label>
+                  <p class="form-control"><?php echo$copies?></p>
                 </div>
 
                 <div class="form-group">

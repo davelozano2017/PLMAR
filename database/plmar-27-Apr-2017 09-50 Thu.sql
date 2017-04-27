@@ -46,14 +46,14 @@ CREATE TABLE `pl_books_tbl` (
   `publisher` varchar(255) NOT NULL,
   `description` varchar(1000) NOT NULL,
   `status` varchar(255) NOT NULL,
+  `copies` int(11) NOT NULL,
   `requesting` int(11) NOT NULL,
   `published_date` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
-INSERT INTO pl_books_tbl VALUES("6","978-3-16-148410-0","Blaze Comics","Fictional books","Dan Jurgens","Dan Jurgens","Blaze Comics is a fictional American comic-book publisher in the DC Comics universe. The issues regularly featured Booster Gold as its main hero.","Available","0","05/08/1986");
-INSERT INTO pl_books_tbl VALUES("7","978-1-86197-876-9","Refugee Boy","Fictional books","Benjamin Zephaniah","Bloomsbury Publishing","Refugee Boy is a teen novel written by Benjamin Zephaniah. It is a book about Alem Kelo, a 14-year-old refugee from Ethiopia and Eritrea. It was first published by Bloomsbury on 28 August 2001 . The novel was the recipient of the 2002 Portsmouth Book Award in the Longer Novel category.\n\n","Unavailable","1","08/21/2001");
-INSERT INTO pl_books_tbl VALUES("13","sample","sample","sample category","sample","sample","samplesamplesample","Unavailable","1","04/02/2017");
+INSERT INTO pl_books_tbl VALUES("7","978-1-86197-876-9","Refugee Boy","Fictional books","Benjamin Zephaniah","Bloomsbury Publishing","Refugee Boy is a teen novel written by Benjamin Zephaniah. It is a book about Alem Kelo, a 14-year-old refugee from Ethiopia and Eritrea. It was first published by Bloomsbury on 28 August 2001 . The novel was the recipient of the 2002 Portsmouth Book Award in the Longer Novel category.\n\n","Available","10","0","08/21/2001");
+INSERT INTO pl_books_tbl VALUES("13","sample","sample","sample category","sample","sample","samplesamplesample","Available","10","0","04/02/2017");
 
 
 
@@ -70,14 +70,8 @@ CREATE TABLE `pl_request_tbl` (
   `approved_date` varchar(255) NOT NULL,
   `returned_date` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
-INSERT INTO pl_request_tbl VALUES("7","A111G0001","John David Lozano","Refugee Boy","Approved","Returned","April 26,  2017","April 26,  2017","April 26,  2017");
-INSERT INTO pl_request_tbl VALUES("8","A111G0002","Jeddahlyn Cabuga","Blaze Comics","Approved","Returned","April 26,  2017","April 26,  2017","April 26,  2017");
-INSERT INTO pl_request_tbl VALUES("9","A111G0001","John David Lozano","Blaze Comics","Approved","Returned","April 26,  2017","April 26,  2017","April 26,  2017");
-INSERT INTO pl_request_tbl VALUES("10","A111G0001","John David Lozano","Blaze Comics","Approved","Returned","April 26,  2017","April 26,  2017","April 26,  2017");
-INSERT INTO pl_request_tbl VALUES("11","A111G0001","John David Lozano","sample","Approved","No","April 26,  2017","April 26,  2017","");
-INSERT INTO pl_request_tbl VALUES("12","A111G0001","John David Lozano","Refugee Boy","Approved","No","April 26,  2017","April 26,  2017","");
 
 
 
@@ -90,12 +84,8 @@ CREATE TABLE `pl_return_books_tbl` (
   `returned_date` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
-INSERT INTO pl_return_books_tbl VALUES("9","A111G0002","Blaze Comics","April 26,  2017","Returned");
-INSERT INTO pl_return_books_tbl VALUES("10","A111G0001","Blaze Comics","April 26,  2017","Returned");
-INSERT INTO pl_return_books_tbl VALUES("11","A111G0001","Refugee Boy","April 26,  2017","Returned");
-INSERT INTO pl_return_books_tbl VALUES("12","A111G0001","Blaze Comics","April 26,  2017","Returned");
 
 
 

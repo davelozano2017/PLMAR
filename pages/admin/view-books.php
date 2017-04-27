@@ -194,6 +194,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           <th>Title</th>
                           <th>Author</th>
                           <th>Status</th>
+                          <th>Copies</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -223,6 +224,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               <td>'.$row->title.'</td>
                               <td>'.$row->author.'</td>
                               <td>'.$status.'</td>
+                              <td>'.$row->copies.'</td>
                               <td>
                               <a href="modify-books.php?id='.$row->id.'" 
                               class="btn btn-primary flat"><i class="fa fa-pencil"></i> Modify </a></td>

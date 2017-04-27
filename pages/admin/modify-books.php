@@ -14,6 +14,7 @@ $isbn = $row->isbn;
 $title = $row->title;
 $category = $row->category;
 $author = $row->author;
+$copies = $row->copies;
 $publisher = $row->publisher;
 $published_date = $row->published_date;
 $description = $row->description;
@@ -219,6 +220,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="form-group">
                   <label for="author">Author</label>
                   <input type="text" class="form-control" value="<?php echo$author?>"  name="author" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="Copies">Copies</label>
+                  <input type="number" class="form-control" value="<?php echo$copies?>"  name="copies" required>
                 </div>
 
                 <div class="form-group">

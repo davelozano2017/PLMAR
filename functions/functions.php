@@ -348,12 +348,13 @@ function modify_books() {
 		$title 			= $db->real_escape_string($_POST['title']);
 		$category 		= $db->real_escape_string($_POST['category']);
 		$author 		= $db->real_escape_string($_POST['author']);
+		$copies 		= $db->real_escape_string($_POST['copies']);
 		$publisher 		= $db->real_escape_string($_POST['publisher']);
 		$published_date = $db->real_escape_string($_POST['published_date']);
 		$description 	= $db->real_escape_string($_POST['description']);
 		$sql = "UPDATE pl_books_tbl SET 
 		isbn = '$isbn', title = '$title', category = '$category',
-		author = '$author', publisher = '$publisher', published_date = '$published_date',
+		author = '$author', copies = '$copies', publisher = '$publisher', published_date = '$published_date',
 		description = '$description' WHERE id = '$id'";
 			$query = $db->query($sql);
 			if($query) {

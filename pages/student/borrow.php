@@ -14,6 +14,7 @@ $sql = "SELECT * FROM pl_books_tbl WHERE id = ".$_GET['id'];
 $query = $db->query($sql);
 $row = $query->fetch_object();
 $title = $row->title;
+$copies = $row->copies;
 $status = 'Pending';
 $request_date = date('F j, \ Y');
 
@@ -22,7 +23,6 @@ $query = $db->query($ssql);
 
 if($query) {
 	$_SESSION['borrow'] = 'Pending';
-	$query = $db->query("UPDATE pl_books_tbl SET status = 'Unavailable', requesting = 1 WHERE id = ".$_GET['id']);
 	header('location:view-books.php');
 }
 

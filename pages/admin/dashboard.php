@@ -173,7 +173,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <div class="row">
       
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-blue">
             <div class="inner">
@@ -191,7 +191,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- ./col -->
 
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
@@ -209,7 +209,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- ./col -->
 
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
@@ -227,7 +227,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- ./col -->
 
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
@@ -245,7 +245,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- ./col -->
 
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-primary">
             <div class="inner">
@@ -263,7 +263,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- ./col -->
 
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
