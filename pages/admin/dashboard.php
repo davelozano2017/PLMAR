@@ -148,6 +148,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </a>
           <ul class="treeview-menu">
             <li><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
+            <li><a href="view-branch.php"><i class="fa fa-circle-o"></i> View Branch</a></li>
             <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
           </ul>
         </li>

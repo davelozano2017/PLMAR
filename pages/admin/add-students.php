@@ -7,6 +7,9 @@ $query = $db->query("SELECT * FROM pl_account_tbl WHERE id = ".$_SESSION['admin'
 $row = $query->fetch_object();
 $name = $row->name;
 $image = $row->image;
+
+$q = $db->query("SELECT * FROM pl_school_branch_tbl");
+
 ?>
 
 <!DOCTYPE html>
@@ -137,6 +140,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </a>
           <ul class="treeview-menu">
             <li><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
+            <li><a href="view-branch.php"><i class="fa fa-circle-o"></i> View Branch</a></li>
             <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
           </ul>
         </li>
@@ -205,6 +209,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <option value="Male" selected="selected">Male</option>
                   <option value="Female">Female</option>
                   </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="Branch">Branch</label>
+                  <select name="branch" class="form-control" required>
+                    <?php foreach($q as $r):?>
+                        <option value="<?php echo$r['branch']?>"><?php echo$r['branch']?></option>
+                    <?php endforeach;?>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="year">Year</label>
+                  <select name="year" class="form-control" style="width: 100%" required>
+                  <option value="1st Year" selected="selected">1st Year</option>
+                  <option value="2nd Year" selected="selected">2nd Year</option>
+                  <option value="3rd Year" selected="selected">3rd Year</option>
+                  <option value="4th Year" selected="selected">4th Year</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="section">Section</label>
+                  <input type="text" class="form-control"  name="section" required>
                 </div>
                
               </div>

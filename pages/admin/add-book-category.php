@@ -137,6 +137,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="view-category.php"><i class="fa fa-circle-o"></i> View Category</a></li>
+            <li><a href="view-branch.php"><i class="fa fa-circle-o"></i> View Branch</a></li>
             <li><a href="export-database.php"><i class="fa fa-circle-o"></i> Export Database</a></li>
           </ul>
         </li>
@@ -174,7 +175,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><i class="fa fa-exclamation-circle"></i> Create New Category</h3>
+              <h3 class="box-title"><i class="fa fa-plus-circle"></i> Create New Category</h3>
             </div>
             <!-- /.box-header -->
             <?php add_category()?>
@@ -183,7 +184,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div class="box-body">
 
                 <div class="form-group">
-                  <label for="category">Category</label>
+                  <label for="branch">Category</label>
                   <input type="text" class="form-control"  name="category" required>
                 </div>
 

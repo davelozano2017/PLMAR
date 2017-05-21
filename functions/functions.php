@@ -71,6 +71,9 @@ function add() {
 		$name 			= $db->real_escape_string($_POST['name']);
 		$email 			= $db->real_escape_string($_POST['email']);
 		$gender 		= $db->real_escape_string($_POST['gender']);
+		$branch 		= $db->real_escape_string($_POST['branch']);
+		$year 			= $db->real_escape_string($_POST['year']);
+		$section 		= $db->real_escape_string($_POST['section']);
 		$password 		= password_hash(12345,PASSWORD_DEFAULT);
 		switch ($gender) {
 			case 'Male':
@@ -146,8 +149,8 @@ function add() {
 					echo 'Mailer Error: ' . $mailer->ErrorInfo;
 			} else {
 			$sql = "INSERT IGNORE INTO pl_account_tbl 
-			(image, student_id, name, email, gender, username, password, role) VALUES 
-			('$image', '$student_id', '$name', '$email', '$gender', '$student_id', '$password','$role')";
+			(image, student_id, name, email, gender, branch, year, section, username, password, role) VALUES 
+			('$image', '$student_id', '$name', '$email', '$gender', '$branch', '$year', '$section', '$student_id', '$password','$role')";
 			$query = $db->query($sql);
 			if($query) {
 				?>
@@ -340,6 +343,60 @@ function modify_category() {
 	}
 }
 
+function modify_branch() {
+	global $db;
+	if(isset($_POST['btn-edit-branch'])) {
+		$id 		= $db->real_escape_string($_POST['id']);
+		$branch 	= $db->real_escape_string($_POST['branch']);
+		$sql = "UPDATE pl_school_branch_tbl SET branch = '$branch' WHERE id = '$id'";
+			$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>Branch has been updated.</h4>",
+					timer: 500, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				},
+				function(){
+				  setTimeout(function(){
+				    location.href="modify-branch.php?id=<?php echo$id?>";
+				  }, 500);
+				});
+				</script>
+			<?php
+		}		
+	}
+
+	if(isset($_POST['btn-delete-branch'])) {
+		$id 	= $db->real_escape_string($_POST['id']);
+		$sql = "DELETE FROM pl_school_branch_tbl WHERE id = '$id'";
+		$query = $db->query($sql);
+		if($query) {
+		?>	
+			<script type="text/javascript">
+			swal({   
+				title: "",  
+				text: "<h4>Branch has been removed.</h4>",
+				timer: 500, 
+				html:  true,
+				type: 'success',  
+				showConfirmButton: true 
+			},
+			function(){
+			  setTimeout(function(){
+			    location.href="view-branch.php";
+			  }, 500);
+			});
+			</script>
+		<?php
+		}
+	}
+}
+
 function modify_books() {
 	global $db;
 	if(isset($_POST['btn-edit-books'])) {
@@ -490,6 +547,48 @@ function add_category() {
 				swal({   
 					title: "",  
 					text: "<h4>New Category has been added.</h4>",
+					timer: 3000, 
+					html:  true,
+					type: 'success',  
+					showConfirmButton: true 
+				});
+				</script>
+				<?php
+			}
+		}
+	}
+}
+
+function add_branch() {
+	global $db;
+	if(isset($_POST['btn-add-branch'])) {
+		$branch 		= $db->real_escape_string($_POST['branch']);
+		
+		$sql 		 	= "SELECT branch from pl_school_branch_tbl WHERE branch = '$branch'";
+		$query 			= $db->query($sql);
+		$check 			= $query->num_rows;
+		if($check > 0) {
+			?>
+			<script type="text/javascript">
+			swal({   
+				title: "",  
+				text: "<h4>  (<?php echo $branch;?>) is already existed.</h4>",
+				timer: 5000, 
+				html: true,
+				type: 'error',  
+				showConfirmButton: true 
+			});
+			</script>
+			<?php
+		} else {
+			$sql = "INSERT IGNORE INTO pl_school_branch_tbl (branch) VALUES ('$branch')";
+			$query = $db->query($sql);
+			if($query) {
+				?>
+				<script type="text/javascript">
+				swal({   
+					title: "",  
+					text: "<h4>New branch has been added.</h4>",
 					timer: 3000, 
 					html:  true,
 					type: 'success',  

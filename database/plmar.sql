@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2017 at 05:55 PM
--- Server version: 10.1.10-MariaDB
--- PHP Version: 7.0.4
+-- Generation Time: May 21, 2017 at 09:20 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -33,6 +33,9 @@ CREATE TABLE `pl_account_tbl` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `gender` varchar(255) NOT NULL,
+  `branch` varchar(255) NOT NULL,
+  `year` varchar(255) NOT NULL,
+  `section` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL,
@@ -43,8 +46,9 @@ CREATE TABLE `pl_account_tbl` (
 -- Dumping data for table `pl_account_tbl`
 --
 
-INSERT INTO `pl_account_tbl` (`id`, `image`, `student_id`, `name`, `email`, `gender`, `username`, `password`, `role`, `date`) VALUES
-(22, 'uploads/administrator.png', 'Administrator', 'Administrator', 'admin@noreply.com', 'Male', 'Administrator', '$2y$10$QbfpMyQ18GHPCXyEQWoko.oCTqaJ4y2w.MNduu2YQzZNSW6HvmDuW', '0', '2017-04-26 07:41:33');
+INSERT INTO `pl_account_tbl` (`id`, `image`, `student_id`, `name`, `email`, `gender`, `branch`, `year`, `section`, `username`, `password`, `role`, `date`) VALUES
+(22, 'uploads/administrator.png', 'Administrator', 'Administrator', 'admin@noreply.com', 'Male', '', '', '', 'Administrator', '$2y$10$QbfpMyQ18GHPCXyEQWoko.oCTqaJ4y2w.MNduu2YQzZNSW6HvmDuW', '0', '2017-04-26 07:41:33'),
+(32, 'uploads/male.jpg', 'A111G0001', 'demo', 'demo@yahoo.com', 'Male', 'Camarin', '4th Year', 'A81', 'A111G0001', '$2y$10$HO01iUPECyhLqPXWCL2GBulK6JvrFMdQYOtXdYAaVNnIuX5TWrIdm', '1', '2017-05-21 19:19:46');
 
 -- --------------------------------------------------------
 
@@ -65,7 +69,8 @@ INSERT INTO `pl_books_category_tbl` (`id`, `category`) VALUES
 (4, 'Emblem booksâ€Ž '),
 (5, 'Poetry Books'),
 (6, 'Fictional books'),
-(8, 'sample category');
+(8, 'sample category'),
+(9, '');
 
 -- --------------------------------------------------------
 
@@ -126,6 +131,26 @@ CREATE TABLE `pl_return_books_tbl` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pl_school_branch_tbl`
+--
+
+CREATE TABLE `pl_school_branch_tbl` (
+  `id` int(11) NOT NULL,
+  `branch` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pl_school_branch_tbl`
+--
+
+INSERT INTO `pl_school_branch_tbl` (`id`, `branch`) VALUES
+(2, 'Camarin'),
+(3, 'Zabarte'),
+(4, 'Lagro');
+
 --
 -- Indexes for dumped tables
 --
@@ -161,6 +186,12 @@ ALTER TABLE `pl_return_books_tbl`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `pl_school_branch_tbl`
+--
+ALTER TABLE `pl_school_branch_tbl`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -168,12 +199,12 @@ ALTER TABLE `pl_return_books_tbl`
 -- AUTO_INCREMENT for table `pl_account_tbl`
 --
 ALTER TABLE `pl_account_tbl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `pl_books_category_tbl`
 --
 ALTER TABLE `pl_books_category_tbl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `pl_books_tbl`
 --
@@ -189,6 +220,11 @@ ALTER TABLE `pl_request_tbl`
 --
 ALTER TABLE `pl_return_books_tbl`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `pl_school_branch_tbl`
+--
+ALTER TABLE `pl_school_branch_tbl`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
